@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ElectronicTestQuestionsSchema } from 'src/schemas/ElectronicTestQuestions.schema';
-import { ElectronicTestQuestions } from './../schemas/ElectronicTestQuestions.schema';
+import { QuestionSchema } from 'src/schemas/Question.schema';
+import { Question } from './../schemas/Question.schema';
 import { QuestionController } from './question.controller';
 import { QuestionService } from './question.service';
 
@@ -9,8 +9,8 @@ import { QuestionService } from './question.service';
   imports: [
     MongooseModule.forFeature([
       {
-        name: ElectronicTestQuestions.name,
-        schema: ElectronicTestQuestionsSchema,
+        name: Question.name,
+        schema: QuestionSchema,
       },
     ]),
   ],

@@ -1,28 +1,35 @@
 import { Injectable } from '@nestjs/common';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { UpdateQuestionDto } from './dto/update-question.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Question, QuestionDocument } from 'src/schemas/Question.schema';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class QuestionService {
-  constructor() {}
+  constructor(
+    @InjectModel(Question.name)
+    private questionModel: Model<QuestionDocument>,
+  ) {}
 
-  create(createQuestionDto: CreateQuestionDto) {
-    return 'This action adds a new question';
+  async create(createQuestionDto: CreateQuestionDto) {
+    const newQuestion = new this.questionModel(createQuestionDto);
+    return await newQuestion.save();
   }
 
-  findAll() {
-    return `This action returns all question 1343`;
+  async findAll() {
+    return await this.questionModel.find().exec(); 
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} question`;
+  async findOne(id: string) {
+    return await this.questionModel.findById(id).exec();
   }
 
-  update(id: number, updateQuestionDto: UpdateQuestionDto) {
-    return `This action updates a #${id} question`;
+  async update(id: string, updateQuestionDto: UpdateQuestionDto) {
+    return await this.questionModel.findByIdAndUpdate(id, updateQuestionDto, { new: true }).exec();
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} question`;
+  async remove(id: string) {
+    return await this.questionModel.findByIdAndDelete(id).exec();
   }
 }
